@@ -1,6 +1,7 @@
 package com.onlineshop.service.impl;
 
 import com.onlineshop.dto.UserDto;
+import com.onlineshop.dto.UserInfoDto;
 import com.onlineshop.entity.User;
 import com.onlineshop.repository.UserRepository;
 import com.onlineshop.service.UserService;
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public UserDto updateUser(Long id, UserDto userDto) {
+    public UserDto updateUser(Long id, UserInfoDto userDto) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
         
@@ -104,16 +105,12 @@ public class UserServiceImpl implements UserService {
         existingUser.setFirstName(userDto.getFirstName());
         existingUser.setLastName(userDto.getLastName());
         
-        // Only update password if provided
-        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        }
-        
         if (userDto.getRole() != null) {
             existingUser.setRole(userDto.getRole());
         }
         
         User updatedUser = userRepository.save(existingUser);
+
         return UserDto.fromEntity(updatedUser);
     }
     
@@ -127,5 +124,17 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User not found with id: " + id);
         }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(Long id, String currentPassword, String newPassword) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 } 

@@ -1,6 +1,7 @@
 package com.onlineshop.service;
 
 import com.onlineshop.dto.UserDto;
+import com.onlineshop.dto.UserInfoDto;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public interface UserService {
      * @param userDto The updated user data
      * @return Updated user DTO
      */
-    UserDto updateUser(Long id, UserDto userDto);
+    UserDto updateUser(Long id, UserInfoDto userDto);
     
     /**
      * Delete user
@@ -58,4 +59,6 @@ public interface UserService {
      * @param id The user ID
      */
     void deleteUser(Long id);
+
+    void changePassword(Long id, String currentPassword, String newPassword);
 } 

@@ -2,6 +2,7 @@ package com.onlineshop.controller;
 
 import com.onlineshop.common.ApiResponse;
 import com.onlineshop.dto.UserDto;
+import com.onlineshop.dto.UserInfoDto;
 import com.onlineshop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import com.onlineshop.dto.ChangePasswordRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * REST controller for User operations
@@ -25,6 +28,9 @@ public class UserController {
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     /**
      * Create a new user
@@ -97,7 +103,7 @@ public class UserController {
      * @return ResponseEntity with updated user data
      */
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserDto>> updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<ApiResponse<UserDto>> updateUser(@PathVariable Long id, @Valid @RequestBody UserInfoDto userDto) {
         try {
             UserDto updatedUser = userService.updateUser(id, userDto);
             return ResponseEntity.ok(ApiResponse.success(updatedUser, "User updated successfully"));
@@ -134,6 +140,16 @@ public class UserController {
             String username = authentication.getName();
             UserDto user = userService.getUserByUsername(username);
             return ResponseEntity.ok(ApiResponse.success(user, "Current user profile retrieved successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/{id}/change-password")
+    public ResponseEntity<ApiResponse<String>> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest request) {
+        try {
+            userService.changePassword(id, request.getCurrentPassword(), request.getNewPassword());
+            return ResponseEntity.ok(ApiResponse.success("Password changed successfully"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
