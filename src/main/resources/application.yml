@@ -3,45 +3,51 @@ spring:
     name: pc-component-store
   
   datasource:
-    url: jdbc:mysql://localhost:3306/pc_component_store?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+    url: ${DB_URL:jdbc:mysql://localhost:3306/pc_component_store?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
   
   jpa:
     hibernate:
-      ddl-auto: validate
-    show-sql: false
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+    show-sql: ${JPA_SHOW_SQL:false}
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
+        format_sql: ${HIBERNATE_FORMAT_SQL:true}
   
   flyway:
-    enabled: true
+    enabled: ${FLYWAY_ENABLED:true}
     baseline-on-migrate: true
     locations: classpath:db/migration
     table: flyway_schema_history
 
   security:
     jwt:
-      secret: your-secret-key-here-make-it-long-and-secure-in-production
-      expiration: 3600000 # 1 hour in milliseconds
+      secret: ${JWT_SECRET:your-secret-key-here-make-it-long-and-secure-in-production}
+      expiration: ${JWT_EXPIRATION:3600000}
 
 app:
   jwt:
-    secret: 8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb
-    expiration: 3600000 # 1 hour in milliseconds
-    refresh-expiration: 604800000 # 7 days in milliseconds
+    secret: ${APP_JWT_SECRET:8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb}
+    expiration: ${APP_JWT_EXPIRATION:3600000}
+    refresh-expiration: ${APP_JWT_REFRESH_EXPIRATION:604800000}
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
   servlet:
-    context-path: /api
+    context-path: ${SERVER_CONTEXT_PATH:/api}
 
 logging:
   level:
-    com.onlineshop: DEBUG
-    org.springframework.security: DEBUG
+    com.onlineshop: ${LOG_LEVEL_COM_ONLINESHOP:DEBUG}
+    org.springframework.security: ${LOG_LEVEL_SPRING_SECURITY:DEBUG}
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" 
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev 

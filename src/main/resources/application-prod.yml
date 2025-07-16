@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  
+  flyway:
+    enabled: true
+
+app:
+  jwt:
+    secret: ${APP_JWT_SECRET}
+    expiration: ${APP_JWT_EXPIRATION:3600000}
+    refresh-expiration: ${APP_JWT_REFRESH_EXPIRATION:604800000}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    com.onlineshop: INFO
+    org.springframework.security: WARN
+    root: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" 
