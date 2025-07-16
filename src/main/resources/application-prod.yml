@@ -1,9 +1,4 @@
 spring:
-  datasource:
-    url: ${MYSQL_PUBLIC_URL}
-    username: ${MYSQLUSER}
-    password: ${MYSQLPASSWORD}
-  
   jpa:
     hibernate:
       ddl-auto: validate
@@ -15,19 +10,12 @@ spring:
   flyway:
     enabled: true
 
-app:
-  jwt:
-    secret: ${APP_JWT_SECRET}
-    expiration: ${APP_JWT_EXPIRATION:3600000}
-    refresh-expiration: ${APP_JWT_REFRESH_EXPIRATION:604800000}
-
-server:
-  port: ${SERVER_PORT:8080}
-
 logging:
   level:
     com.onlineshop: INFO
     org.springframework.security: WARN
-    root: WARN
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" 
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+server:
+  port: ${SERVER_PORT:8080} 
