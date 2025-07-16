@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -23,6 +24,17 @@ public class OrderController {
             Long userId = getCurrentUserId();
             OrderResponse response = orderService.placeOrder(userId, request);
             return ResponseEntity.ok(ApiResponse.success(response, "Order placed successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> getOrdersForUser() {
+        try {
+            Long userId = getCurrentUserId();
+            List<OrderResponse> orders = orderService.getOrdersByUserId(userId);
+            return ResponseEntity.ok(ApiResponse.success(orders, "Orders fetched successfully"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -91,6 +92,41 @@ public class OrderServiceImpl implements OrderService {
             dto.setQuantity(orderItem.getQuantity());
             dto.setPrice(orderItem.getPrice());
             itemDtos.add(dto);
+        }
+        response.setItems(itemDtos);
+        return response;
+    }
+
+    @Override
+    public List<OrderResponse> getOrdersByUserId(Long userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream().map(this::toOrderResponse).collect(Collectors.toList());
+    }
+
+    private OrderResponse toOrderResponse(Order order) {
+        OrderResponse response = new OrderResponse();
+        response.setOrderId(order.getId());
+        response.setStatus(order.getStatus());
+        response.setTotal(order.getTotal());
+        response.setCreatedAt(order.getCreatedAt().toString());
+        response.setShippingName(order.getShippingName());
+        response.setShippingAddress(order.getShippingAddress());
+        response.setShippingCity(order.getShippingCity());
+        response.setShippingZip(order.getShippingZip());
+        response.setShippingCountry(order.getShippingCountry());
+        response.setShippingPhone(order.getShippingPhone());
+        response.setPaymentMethod(order.getPaymentMethod());
+        response.setPaymentStatus(order.getPaymentStatus());
+        List<OrderResponse.OrderItemDto> itemDtos = new ArrayList<>();
+        if (order.getItems() != null) {
+            for (OrderItem orderItem : order.getItems()) {
+                OrderResponse.OrderItemDto dto = new OrderResponse.OrderItemDto();
+                dto.setProductId(orderItem.getProduct().getId());
+                dto.setProductName(orderItem.getProduct().getName());
+                dto.setQuantity(orderItem.getQuantity());
+                dto.setPrice(orderItem.getPrice());
+                itemDtos.add(dto);
+            }
         }
         response.setItems(itemDtos);
         return response;

@@ -57,4 +57,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     @Query("SELECT u FROM User u WHERE u.username = :usernameOrEmail OR u.email = :usernameOrEmail")
     Optional<User> findByUsernameOrEmail(@Param("usernameOrEmail") String usernameOrEmail);
+    
+    /**
+     * Count users by role
+     * 
+     * @param role The role to count
+     * @return count of users with the specified role
+     */
+    long countByRole(User.UserRole role);
 } 
