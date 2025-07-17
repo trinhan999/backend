@@ -15,7 +15,7 @@ CREATE TABLE users (
 
 -- Insert default admin user (password: admin123)
 INSERT INTO users (username, email, password, first_name, last_name, role) 
-VALUES ('admin', 'admin@pcstore.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', 'User', 'ADMIN');
+VALUES ('admin', 'admin@pcstore.com', '$2a$10$BDfk/s.Y8Rz/sCTz4qeH5.o19SLA6etneSYXhPgfhtonOVZPbupSe', 'Admin', 'User', 'ADMIN');
 
 -- Insert test customer accounts
 INSERT INTO users (username, email, password, first_name, last_name, role) 
@@ -25,4 +25,5 @@ INSERT INTO users (username, email, password, first_name, last_name, role)
 VALUES ('jane_smith', 'jane@example.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Jane', 'Smith', 'CUSTOMER');
 
 INSERT INTO users (username, email, password, first_name, last_name, role) 
-VALUES ('test_user', 'test@example.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Test', 'User', 'CUSTOMER'); 
+VALUES ('test_user', 'test@example.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Test', 'User', 'CUSTOMER');
+
