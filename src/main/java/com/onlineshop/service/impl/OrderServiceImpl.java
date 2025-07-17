@@ -103,6 +103,13 @@ public class OrderServiceImpl implements OrderService {
         return orders.stream().map(this::toOrderResponse).collect(Collectors.toList());
     }
 
+    @Override
+    public OrderResponse getOrderByIdAndUserId(Long orderId, Long userId) {
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        return toOrderResponse(order);
+    }
+
     private OrderResponse toOrderResponse(Order order) {
         OrderResponse response = new OrderResponse();
         response.setOrderId(order.getId());

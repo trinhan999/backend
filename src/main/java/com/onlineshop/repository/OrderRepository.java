@@ -14,4 +14,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     
     @Query("SELECT o FROM Order o ORDER BY o.createdAt DESC LIMIT 5")
     List<Order> findTop5ByOrderByCreatedAtDesc();
+    
+    java.util.Optional<Order> findByIdAndUserId(Long id, Long userId);
 } 

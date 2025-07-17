@@ -40,6 +40,17 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/{orderId}")
+    public ResponseEntity<ApiResponse<OrderResponse>> getOrderById(@PathVariable Long orderId) {
+        try {
+            Long userId = getCurrentUserId();
+            OrderResponse order = orderService.getOrderByIdAndUserId(orderId, userId);
+            return ResponseEntity.ok(ApiResponse.success(order, "Order fetched successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
     private Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

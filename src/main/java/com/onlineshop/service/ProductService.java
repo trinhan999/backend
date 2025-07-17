@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
-    Page<ProductDto> getProducts(String category, String brand, BigDecimal minPrice, BigDecimal maxPrice, Integer minRating, Pageable pageable);
+    Page<ProductDto> getProducts(String category, String brand, BigDecimal minPrice, BigDecimal maxPrice, Float minRating, Pageable pageable);
     ProductDto getProductById(Long id);
     List<String> getAllCategories();
     List<String> getAllBrands();

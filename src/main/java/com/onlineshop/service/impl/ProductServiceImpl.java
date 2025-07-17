@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Page<ProductDto> getProducts(String category, String brand, BigDecimal minPrice, BigDecimal maxPrice, Integer minRating, Pageable pageable) {
+    public Page<ProductDto> getProducts(String category, String brand, BigDecimal minPrice, BigDecimal maxPrice, Float minRating, Pageable pageable) {
         Specification<Product> spec = Specification.where(null);
         if (category != null && !category.isEmpty()) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("category"), category));
@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
             spec = spec.and((root, query, cb) -> cb.le(root.get("price"), maxPrice));
         }
         if (minRating != null && minRating > 0) {
-            spec = spec.and((root, query, cb) -> cb.ge(root.get("averageRating"), minRating));
+            spec = spec.and((root, query, cb) -> cb.ge(root.get("averageRating"), BigDecimal.valueOf(minRating)));
         }
         return productRepository.findAll(spec, pageable).map(this::toDto);
     }
